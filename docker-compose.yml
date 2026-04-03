@@ -1,27 +1,29 @@
 version: '3.8'
 
 services:
-  # PostgreSQL 数据库
-  postgres:
-    image: postgres:15-alpine
-    container_name: erp-postgres
+  # MySQL 数据库
+  mysql:
+    image: mysql:8.0
+    container_name: erp-mysql
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: erp_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: erp_db
+      MYSQL_USER: erp
+      MYSQL_PASSWORD: erp123
     ports:
-      - "5432:5432"
+      - "3306:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./deploy/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql
+      - ./deploy/init-mysql.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - erp-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
       interval: 10s
       timeout: 5s
       retries: 5
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
   # Redis 缓存
   redis:
@@ -50,10 +52,10 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3000
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: postgres
-      DB_PASSWORD: postgres
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: root
       DB_DATABASE: erp_db
       JWT_SECRET: erp-secret-key-change-in-production
       REDIS_HOST: redis
@@ -61,7 +63,7 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      postgres:
+      mysql:
         condition: service_healthy
       redis:
         condition: service_healthy
@@ -103,5 +105,5 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:
+  mysql_data:
   redis_data:

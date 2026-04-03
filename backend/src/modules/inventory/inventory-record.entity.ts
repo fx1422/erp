@@ -3,10 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  ManyToOne,
-  JoinColumn,
 } from 'typeorm';
-import { Product } from '../base-data/product/product.entity';
 
 @Entity('inv_inventory_record')
 export class InventoryRecord {
@@ -15,10 +12,6 @@ export class InventoryRecord {
 
   @Column()
   productId: string;
-
-  @ManyToOne(() => Product)
-  @JoinColumn({ name: 'product_id' })
-  product: Product;
 
   @Column({ length: 50 })
   warehouseId: string;

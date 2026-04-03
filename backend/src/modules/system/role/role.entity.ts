@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Permission } from '../permission/permission.entity';

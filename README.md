@@ -18,7 +18,7 @@
 
 ### 后端
 - **框架**: NestJS 11 + TypeScript
-- **数据库**: PostgreSQL 15
+- **数据库**: MySQL 8.0
 - **缓存**: Redis 7
 - **ORM**: TypeORM
 - **认证**: JWT
@@ -40,7 +40,7 @@
 
 - Node.js 20+
 - Docker & Docker Compose
-- PostgreSQL 15+ (或使用 Docker)
+- MySQL 8.0+ (或使用 Docker)
 - Redis 7+ (或使用 Docker)
 
 ### 开发环境启动
@@ -53,7 +53,7 @@ cd erp
 
 #### 2. 启动数据库和缓存
 ```bash
-docker-compose up -d postgres redis
+docker-compose up -d mysql redis
 ```
 
 #### 3. 启动后端

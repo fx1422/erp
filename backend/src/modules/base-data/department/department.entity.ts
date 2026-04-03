@@ -9,6 +9,9 @@ import {
   JoinColumn,
 } from 'typeorm';
 
+/**
+ * 部门实体 - 支持多级组织架构
+ */
 @Entity('base_department')
 export class Department {
   @PrimaryGeneratedColumn('uuid')
@@ -26,13 +29,6 @@ export class Department {
   @Column({ nullable: true })
   parentId: string;
 
-  @ManyToOne(() => Department, (dept) => dept.children)
-  @JoinColumn({ name: 'parent_id' })
-  parent: Department;
-
-  @OneToMany(() => Department, (dept) => dept.parent)
-  children: Department[];
-
   @Column({ default: true })
   enabled: boolean;
 
@@ -41,4 +37,17 @@ export class Department {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  /**
+   * 父部门
+   */
+  @ManyToOne(() => Department, (department) => department.children, { nullable: true })
+  @JoinColumn({ name: 'parent_id' })
+  parent: Department;
+
+  /**
+   * 子部门列表
+   */
+  @OneToMany(() => Department, (department) => department.parent)
+  children: Department[];
 }

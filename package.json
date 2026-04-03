@@ -1,19 +1,50 @@
 {
   "name": "erp-system",
   "version": "1.0.0",
-  "description": "ERP System - Enterprise Resource Planning",
+  "description": "ERP 系统基础模块 - MVP 版本",
   "private": true,
   "scripts": {
-    "init": "bash scripts/init.sh",
+    "test": "vitest run --config test/vitest.config.ts",
+    "test:unit": "vitest run --config test/vitest.config.ts --dir test/automation/unit",
+    "test:integration": "vitest run --config test/vitest.config.ts --dir test/automation/integration",
+    "test:e2e": "vitest run --config test/vitest.config.ts --dir test/automation/e2e",
+    "test:watch": "vitest --config test/vitest.config.ts",
+    "test:coverage": "vitest run --config test/vitest.config.ts --coverage",
+    "test:report": "vitest run --config test/vitest.config.ts --reporter=junit --outputFile=test/reports/junit-report.xml",
+    "test:clean": "rm -rf test/reports/* coverage/*",
+    "test:seed": "psql $DATABASE_URL < test/data/01-seed-data.sql",
+    "test:seed:clean": "psql $TEST_DATABASE_URL < test/data/01-seed-data.sql",
+    "dev": "concurrently \\\"npm run dev:backend\\\" \\\"npm run dev:frontend\\\"",
     "dev:backend": "cd backend && npm run start:dev",
     "dev:frontend": "cd frontend && npm run dev",
+    "build": "npm run build:backend && npm run build:frontend",
     "build:backend": "cd backend && npm run build",
     "build:frontend": "cd frontend && npm run build",
-    "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down",
-    "docker:build": "docker-compose build"
+    "lint": "eslint \\\"{backend,frontend}/**/*.ts\\\"",
+    "format": "prettier --write \\\"{backend,frontend}/**/*.{ts,vue,json,md}\\\""
   },
-  "keywords": ["erp", "nestjs", "vue"],
-  "author": "",
-  "license": "MIT"
+  "keywords": [
+    "erp",
+    "nestjs",
+    "vue3",
+    "typescript"
+  ],
+  "author": "ERP Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.0",
+    "@types/node": "^20.11.0",
+    "@types/supertest": "^6.0.2",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.0",
+    "supertest": "^6.3.4",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0",
+    "@vitest/coverage-v8": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
 }

@@ -6,7 +6,6 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { PurchaseOrder } from './purchase-order.entity';
-import { Product } from '../base-data/product/product.entity';
 
 @Entity('proc_purchase_order_item')
 export class PurchaseOrderItem {
@@ -16,7 +15,7 @@ export class PurchaseOrderItem {
   @Column()
   orderId: string;
 
-  @ManyToOne(() => PurchaseOrder, (order) => order.items)
+  @ManyToOne(() => PurchaseOrder, (order) => order.items, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'order_id' })
   order: PurchaseOrder;
 

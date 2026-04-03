@@ -8,7 +8,6 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
-import { Customer } from '../base-data/customer/customer.entity';
 import { SalesOrderItem } from './sales-order-item.entity';
 
 @Entity('sales_order')
@@ -21,10 +20,6 @@ export class SalesOrder {
 
   @Column()
   customerId: string;
-
-  @ManyToOne(() => Customer)
-  @JoinColumn({ name: 'customer_id' })
-  customer: Customer;
 
   @Column({ length: 20 })
   status: 'draft' | 'pending' | 'approved' | 'shipped' | 'completed' | 'cancelled';
@@ -47,6 +42,6 @@ export class SalesOrder {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => SalesOrderItem, (item) => item.order)
+  @OneToMany(() => SalesOrderItem, (item) => item.order, { cascade: true })
   items: SalesOrderItem[];
 }

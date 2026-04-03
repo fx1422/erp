@@ -8,7 +8,6 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
-import { Supplier } from '../base-data/supplier/supplier.entity';
 import { PurchaseOrderItem } from './purchase-order-item.entity';
 
 @Entity('proc_purchase_order')
@@ -21,10 +20,6 @@ export class PurchaseOrder {
 
   @Column()
   supplierId: string;
-
-  @ManyToOne(() => Supplier)
-  @JoinColumn({ name: 'supplier_id' })
-  supplier: Supplier;
 
   @Column({ length: 20 })
   status: 'draft' | 'pending' | 'approved' | 'received' | 'cancelled';
@@ -47,6 +42,6 @@ export class PurchaseOrder {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => PurchaseOrderItem, (item) => item.order)
+  @OneToMany(() => PurchaseOrderItem, (item) => item.order, { cascade: true })
   items: PurchaseOrderItem[];
 }
