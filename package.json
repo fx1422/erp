@@ -1,0 +1,19 @@
+{
+  "name": "erp-system",
+  "version": "1.0.0",
+  "description": "ERP System - Enterprise Resource Planning",
+  "private": true,
+  "scripts": {
+    "init": "bash scripts/init.sh",
+    "dev:backend": "cd backend && npm run start:dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build"
+  },
+  "keywords": ["erp", "nestjs", "vue"],
+  "author": "",
+  "license": "MIT"
+}
